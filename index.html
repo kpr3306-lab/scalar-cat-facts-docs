@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cat Facts API · Documented with Scalar</title>
+<style>
+:root{--bg:#0b0b14;--card:#14142a;--line:#27274a;--tx:#e8e8f5;--mut:#9a9ac0;--a:#a78bfa;--b:#22d3ee}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(1200px 600px at 70% -10%,#2a1b5c55,transparent),var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
+nav{position:sticky;top:0;backdrop-filter:blur(10px);background:#0b0b14cc;border-bottom:1px solid var(--line);display:flex;gap:22px;align-items:center;padding:14px 6vw;z-index:5;flex-wrap:wrap}
+nav b{margin-right:auto}nav a{color:var(--mut);text-decoration:none;font-size:14px}nav a:hover{color:var(--tx)}
+.hero{padding:90px 6vw 60px;max-width:1100px;margin:auto}
+.hero h1{font-size:clamp(36px,6vw,64px);line-height:1.1;margin:0 0 18px;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mut);max-width:680px;font-size:18px}
+.btn{display:inline-block;padding:12px 22px;border-radius:10px;background:linear-gradient(90deg,#7c3aed,#0ea5e9);color:#fff;text-decoration:none;font-weight:600;margin:8px 10px 0 0}
+.btn.o{background:none;border:1px solid var(--line);color:var(--tx)}
+section{max-width:1100px;margin:auto;padding:50px 6vw}
+h2{font-size:30px;margin:0 0 6px}h2+p{color:var(--mut);margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card h3{margin:0 0 8px;color:var(--a)}.card p,.card li{color:var(--mut);font-size:15px}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+pre{background:#080812;border:1px solid var(--line);border-radius:12px;padding:16px;overflow-x:auto;font-size:13px;color:#cfd0ff}
+code{color:var(--b)}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:24px 0}
+.node{background:var(--card);border:1px solid var(--a);border-radius:12px;padding:12px 16px;font-size:14px;text-align:center}
+.node small{display:block;color:var(--mut)}.arrow{color:var(--b);font-size:22px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{border-bottom:1px solid var(--line);padding:10px;text-align:left}th{color:var(--a)}
+.m{color:#34d399;font-weight:700}footer{text-align:center;color:var(--mut);padding:40px;border-top:1px solid var(--line);font-size:14px}
+</style></head><body>
+<nav><b>🐱 Cat Facts × Scalar</b><a href="#openapi">OpenAPI</a><a href="#scalar">How Scalar works</a><a href="#embed">Embedding</a><a href="#client">API client</a><a href="#run">Run it</a><a href="docs.html">Live docs →</a></nav>
+
+<div class="hero">
+  <h1>Beautiful API docs from a single YAML file.</h1>
+  <p>A hand-written <b>OpenAPI 3.1</b> specification for the public <b>Cat Facts API</b>, rendered with <b>Scalar</b>, complete with an interactive API client you can use to call the live endpoints.</p>
+  <a class="btn" href="docs.html">Open the Scalar reference</a><a class="btn o" href="openapi.yaml">View openapi.yaml</a>
+</div>
+
+<section id="build"><h2>What was built</h2><p>Three small files make the whole project.</p>
+<div class="grid">
+<div class="card"><h3>openapi.yaml</h3><p>The contract: 3 endpoints (<code>/fact</code>, <code>/facts</code>, <code>/breeds</code>), reusable parameters, schemas, responses and examples.</p></div>
+<div class="card"><h3>docs.html</h3><p>~15 lines of HTML that load Scalar from a CDN and point it at the spec. No build step, no backend.</p></div>
+<div class="card"><h3>index.html</h3><p>This page: the written research and explanation of the stack.</p></div>
+</div>
+<table style="margin-top:26px"><tr><th>Method</th><th>Path</th><th>Purpose</th><th>Key params</th></tr>
+<tr><td class="m">GET</td><td><code>/fact</code></td><td>One random fact</td><td><code>max_length</code></td></tr>
+<tr><td class="m">GET</td><td><code>/facts</code></td><td>Paginated list of facts</td><td><code>limit</code>, <code>page</code>, <code>max_length</code></td></tr>
+<tr><td class="m">GET</td><td><code>/breeds</code></td><td>Paginated list of breeds</td><td><code>limit</code>, <code>page</code></td></tr></table></section>
+
+<section id="openapi"><h2>1. What is OpenAPI?</h2>
+<p>OpenAPI (formerly Swagger) is a vendor-neutral, language-agnostic standard for describing HTTP APIs in a machine-readable YAML or JSON file. Because the description is data, one file can drive documentation, client SDKs, mock servers, tests and validation.</p>
+<div class="grid">
+<div class="card"><h3>openapi</h3><p>The spec version (here <code>3.1.0</code>), which also aligns schemas with JSON Schema.</p></div>
+<div class="card"><h3>info</h3><p>Title, version, description (Markdown), contact and license.</p></div>
+<div class="card"><h3>servers</h3><p>Base URLs where the API lives, e.g. <code>https://catfact.ninja</code>.</p></div>
+<div class="card"><h3>tags</h3><p>Groups of operations; Scalar uses them as sidebar sections.</p></div>
+<div class="card"><h3>paths</h3><p>Each path holds HTTP methods; each operation has an <code>operationId</code>, parameters and responses by status code.</p></div>
+<div class="card"><h3>components</h3><p>Reusable <code>schemas</code>, <code>parameters</code>, <code>responses</code> and security schemes, reached with <code>$ref</code>.</p></div>
+</div>
+<pre>openapi: 3.1.0
+info:        { title: Cat Facts API, version: 1.0.0 }
+servers:     [ { url: https://catfact.ninja } ]
+paths:
+  /fact:
+    get:
+      operationId: getRandomFact
+      parameters: [ { name: max_length, in: query, schema: { type: integer } } ]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Fact" }   # reuse
+components:
+  schemas:
+    Fact: { type: object, properties: { fact: {type: string}, length: {type: integer} } }</pre></section>
+
+<section id="scalar"><h2>2. How is Scalar put together?</h2>
+<p>Scalar is an open-source (MIT) toolkit. The part used here is <code>@scalar/api-reference</code>, a Vue-based front-end app shipped as a single JavaScript bundle. It runs entirely in the browser.</p>
+<div class="flow">
+<div class="node">openapi.yaml<small>source of truth</small></div><span class="arrow">→</span>
+<div class="node">Fetch &amp; parse<small>YAML/JSON loaded from <code>url</code></small></div><span class="arrow">→</span>
+<div class="node">Resolve &amp; normalize<small>$refs dereferenced, spec upgraded to a common shape</small></div><span class="arrow">→</span>
+<div class="node">Vue components<small>sidebar, operations, schemas, code samples</small></div><span class="arrow">→</span>
+<div class="node">Reference page<small>+ embedded API client</small></div></div>
+<div class="grid">
+<div class="card"><h3>Spec → page</h3><p>Scalar loads the document, resolves <code>$ref</code> links and walks the tree: tags become sidebar groups, each path+method becomes an operation card, schemas become property tables with types and examples.</p></div>
+<div class="card"><h3>Code samples</h3><p>For every operation it generates request snippets (cURL, JavaScript, Python and more) from the parameters and server URL, so they stay in sync with the spec.</p></div>
+<div class="card"><h3>Config object</h3><p>Behaviour and looks are set by one configuration object: <code>url</code>, <code>theme</code>, <code>layout</code>, dark mode, default client and so on.</p></div>
+<div class="card"><h3>Package split</h3><p>Reference renderer (<code>@scalar/api-reference</code>), API client (<code>@scalar/api-client</code>), plus framework integrations (Express, Fastify, Hono, FastAPI, Django, .NET and others) that serve the same bundle.</p></div>
+</div></section>
+
+<section id="embed"><h2>3. How is Scalar embedded?</h2>
+<p>Two main routes. Both share the same configuration object.</p>
+<div class="grid">
+<div class="card"><h3>A. CDN script (used here)</h3><p>Zero tooling: add the script tag, call <code>Scalar.createApiReference</code>.</p></div>
+<div class="card"><h3>B. npm / framework</h3><p><code>npm i @scalar/api-reference</code> then <code>import { createApiReference }</code>, or use an integration that mounts the docs at e.g. <code>/reference</code> in your server.</p></div></div>
+<pre>&lt;div id="app"&gt;&lt;/div&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"&gt;&lt;/script&gt;
+&lt;script&gt;
+  Scalar.createApiReference('#app', { url: './openapi.yaml', theme: 'purple' })
+&lt;/script&gt;</pre>
+<p>Tip: pin a version (<code>@scalar/api-reference@1.28.5</code>) so an upstream release cannot change your docs unexpectedly.</p></section>
+
+<section id="client"><h2>4. The built-in API client</h2>
+<p>Every endpoint in the reference has a <b>Test Request</b> button that opens Scalar's API client, a Postman-style panel inside the docs.</p>
+<div class="grid">
+<div class="card"><h3>Pre-filled from the spec</h3><p>Server, method, path, query parameters (with their examples such as <code>limit=5</code>) and headers are filled in automatically.</p></div>
+<div class="card"><h3>Send &amp; inspect</h3><p>Edit values, press <b>Send</b>, and see status, timing, headers and the formatted JSON body without leaving the page.</p></div>
+<div class="card"><h3>CORS &amp; proxy</h3><p>Requests are made from the browser. If an API blocks CORS, Scalar's optional <code>proxyUrl</code> can relay them. Cat Facts allows browser calls.</p></div></div>
+<h3 style="margin-top:28px">Demo walkthrough (for your screenshots)</h3>
+<ol style="color:var(--mut)"><li>Open <a style="color:var(--b)" href="docs.html">docs.html</a>, choose <b>Facts → List cat facts</b>.</li>
+<li>Click <b>Test Request</b>, set <code>limit</code> = 3 and <code>max_length</code> = 100.</li>
+<li>Press <b>Send</b>: the response shows <code>data[]</code> of facts plus pagination fields, matching the <code>FactPage</code> schema.</li>
+<li>Switch the code sample from cURL to JavaScript to show generated snippets.</li></ol></section>
+
+<section id="run"><h2>Run it</h2>
+<p>Scalar fetches <code>openapi.yaml</code> with the browser, so serve the folder over HTTP (opening the file directly can be blocked).</p>
+<pre>cd scalar-cat-facts-docs
+python -m http.server 8000
+# open http://localhost:8000  and  http://localhost:8000/docs.html</pre>
+<p>To validate the spec: <code>npx @redocly/cli lint openapi.yaml</code></p></section>
+<footer>Introduction to Modern Application Development · Problem 11 · API Documentation with Scalar · Kshitij Rane</footer>
+</body></html>

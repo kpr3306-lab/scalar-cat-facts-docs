@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cat Facts API Reference · Scalar</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐱</text></svg>" />
+</head>
+<body>
+  <div id="app"></div>
+  <!-- Scalar bundle from jsDelivr (pin a version in production, e.g. @scalar/api-reference@1.28.5) -->
+  <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+  <script>
+    Scalar.createApiReference('#app', {
+      url: './openapi.yaml',          // our hand-written OpenAPI 3.1 spec
+      theme: 'purple',
+      layout: 'modern',
+      forceDarkModeState: 'dark',
+      defaultHttpClient: { targetKey: 'shell', clientKey: 'curl' },
+      metaData: { title: 'Cat Facts API Reference' }
+    })
+  </script>
+</body>
+</html>

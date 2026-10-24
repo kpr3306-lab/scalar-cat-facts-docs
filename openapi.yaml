@@ -1,0 +1,152 @@
+openapi: 3.1.0
+info:
+  title: Cat Facts API
+  version: 1.0.0
+  summary: Random cat facts and a catalogue of cat breeds.
+  description: |
+    A small, public, read-only API serving **random cat facts** and a **list of cat breeds**.
+    No authentication is required.
+
+    This OpenAPI document was written by hand for the course
+    *Introduction to Modern Application Development* and is rendered with **Scalar**.
+    Use the built-in API client (the **Test Request** button) on any endpoint to call the live API.
+  contact:
+    name: Kshitij Rane
+    url: https://kpr3306-lab.github.io/kshitij-portfolio/
+  license:
+    name: MIT
+    identifier: MIT
+servers:
+  - url: https://catfact.ninja
+    description: Public production server
+tags:
+  - name: Facts
+    description: Short factual statements about cats.
+  - name: Breeds
+    description: Cat breeds with origin, coat and pattern.
+paths:
+  /fact:
+    get:
+      tags: [Facts]
+      operationId: getRandomFact
+      summary: Get a random cat fact
+      description: Returns a single random fact, optionally limited to a maximum character length.
+      parameters:
+        - name: max_length
+          in: query
+          description: Maximum length (in characters) of the returned fact.
+          required: false
+          schema: { type: integer, minimum: 1, example: 140 }
+      responses:
+        "200":
+          description: A random fact.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Fact" }
+              example:
+                fact: Cats sleep for 70% of their lives.
+                length: 35
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /facts:
+    get:
+      tags: [Facts]
+      operationId: listFacts
+      summary: List cat facts (paginated)
+      parameters:
+        - { $ref: "#/components/parameters/Limit" }
+        - { $ref: "#/components/parameters/Page" }
+        - name: max_length
+          in: query
+          description: Only return facts up to this many characters.
+          schema: { type: integer, minimum: 1, example: 100 }
+      responses:
+        "200":
+          description: A page of facts.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FactPage" }
+  /breeds:
+    get:
+      tags: [Breeds]
+      operationId: listBreeds
+      summary: List cat breeds (paginated)
+      parameters:
+        - { $ref: "#/components/parameters/Limit" }
+        - { $ref: "#/components/parameters/Page" }
+      responses:
+        "200":
+          description: A page of breeds.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BreedPage" }
+              example:
+                current_page: 1
+                per_page: 2
+                total: 98
+                last_page: 49
+                data:
+                  - { breed: Abyssinian, country: Ethiopia, origin: Natural/Standard, coat: Short, pattern: Ticked }
+                  - { breed: Aegean, country: Greece, origin: Natural/Standard, coat: Semi-long, pattern: Bi- or tri-colored }
+components:
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Number of items per page.
+      schema: { type: integer, minimum: 1, default: 10, example: 5 }
+    Page:
+      name: page
+      in: query
+      description: Page number, starting at 1.
+      schema: { type: integer, minimum: 1, default: 1 }
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+  schemas:
+    Fact:
+      type: object
+      required: [fact, length]
+      properties:
+        fact: { type: string, description: The fact text. }
+        length: { type: integer, description: Number of characters in the fact. }
+    Breed:
+      type: object
+      properties:
+        breed: { type: string, example: Siamese }
+        country: { type: string, example: Thailand }
+        origin: { type: string, example: Natural/Standard }
+        coat: { type: string, example: Short }
+        pattern: { type: string, example: Colorpoint }
+    Pagination:
+      type: object
+      properties:
+        current_page: { type: integer }
+        per_page: { type: integer }
+        total: { type: integer }
+        last_page: { type: integer }
+        next_page_url: { type: [string, "null"], format: uri }
+        prev_page_url: { type: [string, "null"], format: uri }
+    FactPage:
+      allOf:
+        - { $ref: "#/components/schemas/Pagination" }
+        - type: object
+          properties:
+            data:
+              type: array
+              items: { $ref: "#/components/schemas/Fact" }
+    BreedPage:
+      allOf:
+        - { $ref: "#/components/schemas/Pagination" }
+        - type: object
+          properties:
+            data:
+              type: array
+              items: { $ref: "#/components/schemas/Breed" }
+    Error:
+      type: object
+      properties:
+        message: { type: string, example: Not Found }
